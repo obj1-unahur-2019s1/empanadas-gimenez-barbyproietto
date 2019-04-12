@@ -1,26 +1,45 @@
-object galvan {
-	// la linea que sigue es equivalente a todo lo que está debajo.
-	// le agrega al objeto: un atributo, el método para acceder, y el método para modificar.
-//	var property sueldo = 15000
-
-	var sueldo = 15000
-	method sueldo() { return sueldo }
-	method sueldo(nuevoValor) { sueldo = nuevoValor }
-}
-
-object baigorria {
-	var cantidadEmpanadasVendidas = 100
-	var montoPorEmpanada = 15
-	
-	method venderEmpanada() {
-		cantidadEmpanadasVendidas += 1
-	}
- 	
-	method sueldo() = cantidadEmpanadasVendidas * montoPorEmpanada
-}
-
 object gimenez {
 	var dinero = 300000
-	method dinero() { return dinero }
-	method pagarA( empleado ) { dinero -= empleado.sueldo() }
+	method pagar( empleado ) { dinero -= empleado.sueldo()
+		 empleado.cobrarsueldo()
+	}
+	method saldo() { return dinero }
+}
+
+
+object baigorria {
+	var venta=0
+	var montoEmpanada=15
+	method venderEmpanada(cantidad) {venta=cantidad*montoEmpanada}
+ 	method totalCobrado()= venta + self.sueldo()
+	method sueldo() {return venta}
+	method cobrarsueldo(){return venta}
+}
+
+object galvan {
+	var totalDinero = 0
+	var totalDeuda = 0
+	var sueldo = 15000
+	method sueldo() { return sueldo }
+	method cambiarSueldo(cuanto) { sueldo = cuanto }
+	method cobrarSueldo(){
+		if (totalDeuda>0){
+			var cuantoCancelar = self.sueldo().min(totalDeuda)
+			var cuantoGuardar = self.sueldo() - cuantoCancelar
+			totalDeuda = totalDeuda - cuantoCancelar
+			totalDinero = totalDinero + cuantoGuardar
+		}else{
+			totalDinero = totalDinero + self.sueldo()
+		}
+	}
+
+	method gastar(cuanto){
+		totalDinero=totalDinero-cuanto
+	}
+	method totalDeuda(){
+		return totalDeuda
+	}
+	method totalDinero(){
+		return totalDinero
+	}
 }
